@@ -47,18 +47,14 @@ GENTOO_DEPS_GITHUB_TOKEN="ghp_deps_xxxx" \
 ### gentoo-deps 字段
 
 ```toml
-["dev-util/shfmt"]
-source = "github"
-github = "mvdan/sh"
-use_latest_release = true
-prefix = "v"
-
+["demo/example"]
 gentoo_deps_lang = "golang"
 gentoo_deps_tag = "v{{newver}}"
 gentoo_deps_p = "shfmt-{{newver}}"
 gentoo_deps_repo = "mvdan/sh"
 gentoo_deps_workdir = ""
 gentoo_deps_vendordir = ""
+gentoo_deps_source_url = "git@github.com:demo/example.git" # must end with .git
 gentoo_deps_disabled = false
 ```
 
