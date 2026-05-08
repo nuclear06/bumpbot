@@ -14,7 +14,7 @@ fork from `gentoo-zh-drafts/bumpbot`
 ```bash
 GITHUB_REPOSITORY="owner/overlay" \
 GITHUB_TOKEN="ghp_xxxx" \
-./bumpbot --file overlay.toml --name "dev-util/shfmt" --newver "3.13.1" --oldver "3.13.0"
+./bumpbot --file overlay.toml --name "dev-util/shfmt" --newver "3.13.1" --oldver "3.13.0" --description "A shell parser" --homepage "https://github.com/mvdan/sh"
 ```
 
 带 `gentoo-deps` issue 联动：
@@ -24,7 +24,7 @@ GITHUB_REPOSITORY="owner/overlay" \
 GITHUB_TOKEN="ghp_overlay_xxxx" \
 GENTOO_DEPS_REPOSITORY="owner/gentoo-deps" \
 GENTOO_DEPS_GITHUB_TOKEN="ghp_deps_xxxx" \
-./bumpbot --file overlay.toml --name "dev-util/shfmt" --newver "3.13.1" --oldver "3.13.0"
+./bumpbot --file overlay.toml --name "dev-util/shfmt" --newver "3.13.1" --oldver "3.13.0" --description "A shell parser" --homepage "https://github.com/mvdan/sh"
 ```
 
 参数说明：
@@ -32,6 +32,8 @@ GENTOO_DEPS_GITHUB_TOKEN="ghp_deps_xxxx" \
 - `--name`: 包名，例如 `dev-util/shfmt`
 - `--newver`: 新版本
 - `--oldver`: 旧版本，可为空
+- `--description`: 包描述，可为空
+- `--homepage`: 包主页，可为空
 
 环境变量：
 - `GITHUB_REPOSITORY`: 当前 overlay 仓库，例如 `GENTOO/overlay`
