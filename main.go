@@ -319,13 +319,16 @@ func renderTemplate(template string, packageName string, newver string, oldver s
 	return replacer.Replace(template)
 }
 
-func buildOverlayIssueBody(config PackageConfig, oldver string, depsIssueURL string, repoIsOfficial bool, description string, homepage string) string {
+func buildOverlayIssueBody(config PackageConfig, oldver string, depsIssueURL string, repoIsOfficial bool, description string, homepage string, releaseURL string) string {
 	lines := []string{}
 	if description != "" {
 		lines = append(lines, "DESCRIPTION: "+description)
 	}
 	if homepage != "" {
 		lines = append(lines, "HOMEPAGE: "+homepage)
+	}
+	if releaseURL != "" {
+		lines = append(lines, "RELEASE URL: "+releaseURL)
 	}
 	if oldver != "" {
 		lines = append(lines, "oldver: "+oldver)
@@ -435,6 +438,7 @@ func main() {
 		tomlFile    string
 		description string
 		homepage    string
+		releaseURL  string
 	)
 
 	flag.StringVar(&name, "name", "", "package name")
@@ -443,6 +447,7 @@ func main() {
 	flag.StringVar(&tomlFile, "file", "", "overlay.toml path")
 	flag.StringVar(&description, "description", "", "package description")
 	flag.StringVar(&homepage, "homepage", "", "package homepage")
+	flag.StringVar(&releaseURL, "release-url", "", "package release url")
 	flag.Parse()
 
 	repoName := os.Getenv("GITHUB_REPOSITORY")
@@ -479,7 +484,7 @@ func main() {
 
 	overlayTitlePrefix := "[nvchecker] " + name + " can be bump to "
 	overlayTitle := overlayTitlePrefix + newver
-	overlayBody := buildOverlayIssueBody(config, oldver, "", repoIsOfficial, description, homepage)
+	overlayBody := buildOverlayIssueBody(config, oldver, "", repoIsOfficial, description, homepage, releaseURL)
 	overlayIssue := upsertIssue(client, repoName, overlayTitlePrefix, overlayTitle, overlayBody, []githubv4.ID{nvcheckerLabelID})
 
 	if depsRequest != nil {
@@ -493,7 +498,7 @@ func main() {
 		depsIssue := upsertIssue(depsClient, gentooDepsRepository, depsTitlePrefix, depsTitle, depsBody, []githubv4.ID{depsLabelID})
 		depsIssueURL = string(depsIssue.Url)
 
-		overlayBody = buildOverlayIssueBody(config, oldver, depsIssueURL, repoIsOfficial, description, homepage)
+		overlayBody = buildOverlayIssueBody(config, oldver, depsIssueURL, repoIsOfficial, description, homepage, releaseURL)
 		upsertIssue(client, repoName, overlayTitlePrefix, overlayTitle, overlayBody, []githubv4.ID{nvcheckerLabelID})
 	}
 }
